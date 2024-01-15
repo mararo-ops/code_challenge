@@ -19,7 +19,7 @@ class Hero(db.Model):
         return f'<Hero {self.name} {self.super_name}>'
     
     class HeroPowers(db.Model):
-    __tablename__='heropowers'
+     __tablename__='heropowers'
 
     id = db.Column(db.Integer, primary_key=True)
     strength=db.Column(db.String,nullable=False)
