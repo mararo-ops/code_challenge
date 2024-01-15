@@ -12,3 +12,14 @@ with app.app_context():
     HeroPowers.query.delete()
     Hero.query.delete()
     Power.query.delete()
+
+#seeding hero
+    heros=[] #empty list to store the heros
+    for i in range(10):
+        b=Hero(name=fake.name(),
+                     super_name=fake.name())
+        heros.append(b)
+    
+    db.session.add_all(heros)
+    db.session.commit()
+    
