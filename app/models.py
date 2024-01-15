@@ -18,3 +18,28 @@ class Hero(db.Model):
     def __repr__(self):
         return f'<Hero {self.name} {self.super_name}>'
     
+    class HeroPowers(db.Model):
+    __tablename__='heropowers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    strength=db.Column(db.String,nullable=False)
+    hero_id=db.Column(db.Integer,db.ForeignKey('hero.id'))
+    power_id=db.Column(db.Integer,db.ForeignKey('power.id'))
+    created_at=db.Column(db.DateTime,server_default=db.func.now())
+    updated_at=db.Column(db.DateTime,onupdate=db.func.now())
+
+#defining the relationships
+    hero = db.relationship('Hero', back_populates='hero_powers')
+    power = db.relationship('Power', back_populates='hero_powers')
+#validation for the strength
+    @validates('strength')
+    def validate_strength(self,key,strength):
+        valid_strengths = ['Strong', 'Weak', 'Average']
+        if strength not in valid_strengths:
+            raise ValueError(f"Strength must be one of: {', '.join(valid_strengths)}")
+
+        return strength
+    
+    def __repr__(self):
+        return f'<Heropowers {self.strength} >'
+    
