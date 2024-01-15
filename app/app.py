@@ -43,7 +43,7 @@ class HeroID(Resource):
           return make_response(jsonify(hero_details), 200)
       
       class PowerResource(Resource):
-def get(self):
+   def get(self):
       powers=Power.query.all()
       powers_list=[{'id':power.id,'name':power.name,'description':power.description} for power in powers]
 
