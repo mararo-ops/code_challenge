@@ -59,3 +59,94 @@ class PowerID(Resource):
       else:
          power_details=[{'id':power_one.id,'name':power_one.name,'description':power_one.description}]
          return make_response(jsonify(power_details),200)
+
+#patch for the power description
+   def patch(self,id):
+      
+      data =request.get_json()
+      power=Power.query.filter_by(id=id).first()
+      
+#checking if the power exist 
+      if power is None:
+          return make_response(jsonify({"error": "Power not found"}), 404)
+      
+#validation for the len of description
+      if len(data["description"]) < 20:
+       return jsonify({
+        "errors": ["description must be at least 20 characters long"]
+    }), 400
+
+       #updating the description
+      try:
+        power.description = data["description"]
+        db.session.commit()
+
+      except Exception as e:
+    # If the power is not updated successfully, return error response
+         return jsonify({
+         "errors": ["validation errors"]
+      }), 400
+      
+
+      new_response={
+          'id':power.id,
+          'name':power.name,
+          'description':power.description
+      }
+      return make_response(jsonify(new_response),200)
+
+#post for a heropower creating new records
+class HeroPowersResource(Resource):
+   def post(self):
+      data = request.get_json()
+      strength = data.get('strength')
+      hero_id = data.get('hero_id')
+      power_id = data.get('power_id')
+      
+      # Check if the hero and power exist in the database
+      hero = Hero.query.get(hero_id)
+      power = Power.query.get(power_id)
+
+      if not hero:
+            return make_response(jsonify({"error": "Hero not found"}), 404)
+
+      if not power:
+            return make_response(jsonify({"error": "Power not found"}), 404)
+
+      
+      new_heropower = HeroPowers(
+            strength=strength,
+            hero_id=hero_id,
+            power_id=power_id
+        )
+      db.session.add(new_heropower)
+      db.session.commit()
+      
+      #returning a response 
+      response = {
+            'id': hero.id,
+            'name': hero.name,
+            'super_name': hero.super_name,
+            'powers': [
+                {
+                    'id': power.id,
+                    'name': power.name,
+                    'description': power.description
+                }
+            ]
+        }
+
+      return make_response(jsonify(response), 200)
+    
+      
+
+api.add_resource(HeroResource,'/heroes')
+api.add_resource(HeroID,'/heroes/<int:id>')
+api.add_resource(PowerResource,'/powers')
+api.add_resource(PowerID,'/powers/<int:id>')
+api.add_resource(HeroPowersResource, '/hero_powers')
+
+
+if __name__ == '__main__':
+    app.run(port=5555)
+    print(app.url_map)
