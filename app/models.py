@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
@@ -67,3 +68,5 @@ class Power(db.Model):
      def __repr__(self):
         return f'<power {self.name} {self.description}>'
     
+
+
