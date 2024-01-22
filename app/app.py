@@ -7,6 +7,9 @@ from models import db, Hero, HeroPowers, Power
 
 app = Flask(__name__)
 CORS(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite3:///app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 migrate = Migrate(app, db)
 
 db.init_app(app)
@@ -150,4 +153,4 @@ api.add_resource(HeroPowersResource, '/hero_powers')
 
 if __name__ == '__main__':
     app.run(port=5555)
-    print(app.url_map)
+    
