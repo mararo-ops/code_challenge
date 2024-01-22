@@ -10,7 +10,7 @@ function Hero() {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`/heroes/${id}`).then((r) => {
+    fetch(`superheroes-fkwy.onrender.com/heroes/${id}`).then((r) => {
       if (r.ok) {
         r.json().then((hero) =>
           setHero({ data: hero, error: null, status: "resolved" })

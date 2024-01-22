@@ -5,7 +5,7 @@ function Home() {
   const [heros, setHeros] = useState([]);
 
   useEffect(() => {
-    fetch("/heroes")
+    fetch("superheroes-fkwy.onrender.com/heroes")
       .then((r) => r.json())
       .then(setHeros);
   }, []);

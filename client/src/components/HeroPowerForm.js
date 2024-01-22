@@ -11,7 +11,7 @@ function HeroPowerForm() {
   const history = useNavigate();
 
   useEffect(() => {
-    fetch("/heroes")
+    fetch("superheroes-fkwy.onrender.com/heroes")
       .then((r) => r.json())
       .then(setHeroes);
   }, []);
